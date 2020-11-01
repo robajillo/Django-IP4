@@ -10,6 +10,10 @@ from django.contrib.auth.models import User
 def index(request):
     return render(request, 'index.html')
 
+def profile(request, username):
+    return render(request, 'profile.html')
+
+
 def signup(request):
     if request.method == 'POST':
         form = SignupForm(request.POST)
@@ -53,7 +57,7 @@ def single_neighborhood(request, hood_id):
         form = BusinessForm(request.POST)
         if form.is_valid():
             business_form = form.save(commit=False)
-            business_form.neighbourhood = hood
+            business_form.neighborhood = hood
             business_form.user = request.user.profile
             business_form.save()
             return redirect('single-neighborhood', hood.id)
@@ -69,17 +73,17 @@ def single_neighborhood(request, hood_id):
 
 def members(request, hood_id):
     hood = Neighborhood.objects.get(id=hood_id)
-    members = Profile.objects.filter(neighbourhood=hood)
+    members = Profile.objects.filter(neighborhood=hood)
     return render(request, 'members.html', {'members': members})
 
 def join_hood(request, id):
-    neighbourhood = get_object_or_404(NeighbourHood, id=id)
-    request.user.profile.neighbourhood = neighbourhood
+    neighborhood = get_object_or_404(Neighborhood, id=id)
+    request.user.profile.neighborhood = neighborhood
     request.user.profile.save()
     return redirect('hood')
 
 def leave_hood(request, id):
-    hood = get_object_or_404(NeighbourHood, id=id)
-    request.user.profile.neighbourhood = None
+    neighborhood = get_object_or_404(Neighborhood, id=id)
+    request.user.profile.neighborhood = None
     request.user.profile.save()
-    return redirect('hood')
+    return redirect('neighborhood')
