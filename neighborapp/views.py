@@ -66,3 +66,4 @@ def single_neighborhood(request, hood_id):
         'posts': posts
     }
     return render(request, 'single_neighborhood.html', params)
+
