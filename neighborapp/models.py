@@ -33,14 +33,25 @@ class Profile(models.Model):
     neighborhood = models.ForeignKey(Neighborhood, on_delete=models.SET_NULL, related_name='members', blank=True)
     profile_picture = models.ImageField(upload_to='images/')
 
-    def __str__(self):
-        return self.user
-    
-    def create_profile(self):
-        self.save()
+    def create_user_profile(sender, instance, created, **kwargs):
+        if created:
+            Profile.objects.create(user=instance)
 
-    def delete_profile(self):
-        self.delete()
+        post_save.connect(create_user_profile, sender=User)
+
+    @receiver(post_save, sender=User)
+    def update_user_profile(sender, instance, created, **kwargs):
+        if created:
+            Profile.objects.create(user=instance)
+        instance.profile.save()
+
+    @classmethod
+    def get_profile(cls):
+        profile = Profile.objects.all()
+        return profile
+
+    class Meta:
+        ordering = ['user']
 
 class Business(models.Model):
     name = models.CharField(max_length=50, null=True, blank=True)
