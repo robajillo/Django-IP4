@@ -34,20 +34,29 @@ class Profile(models.Model):
     profile_picture = models.ImageField(upload_to='images/')
 
     def __str__(self):
-        return f'{self.user.username} profile'
+        return self.user
+    
+    def create_profile(self):
+        self.save()
 
+    def delete_profile(self):
+        self.delete()
 
-class User(models.Model):
-    name =  models.CharField(max_length=50, blank=True)
+class Business(models.Model):
+    name = models.CharField(max_length=50, null=True, blank=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='owner')
     email = models.EmailField(max_length=100, blank=True)
-    status = models.CharField(max_length=50,  blank=True)
-    neighborhood = models.ForeignKey(Neighborhood, on_delete=models.CASCADE)
+    neighborhood = models.ForeignKey(Neighborhood, on_delete=models.CASCADE, related_name='owner')
 
     def __str__(self):
         return self.name
 
-    def create_user(self):
-        self.save()
+    def create_business(self):
+        self.save
 
-    def delete_user(self):
+    def delete_business(self):
         self.delete()
+    
+    @classmethod
+    def search_business(cls, name):
+        return cls.objects.filter(name__icontains=name).all()
