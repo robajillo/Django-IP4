@@ -68,3 +68,12 @@ class Post(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='post_owner')
     hood = models.ForeignKey(Neighborhood, on_delete=models.CASCADE, related_name='hood_post')
+
+    def save_posts(self):
+		self.save()
+
+	def delete_posts(self):
+		self.delete()
+
+	def __str__(self):
+		return self.title
