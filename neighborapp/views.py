@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponseRedirect
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
-from .models import *
+from .models import Neighborhood, Profile, Business, Post
 from .forms import *
 from django.contrib.auth.models import User
 
@@ -67,3 +67,7 @@ def single_neighborhood(request, hood_id):
     }
     return render(request, 'single_neighborhood.html', params)
 
+def members(request, hood_id):
+    hood = Neighborhood.objects.get(id=hood_id)
+    members = Profile.objects.filter(neighbourhood=hood)
+    return render(request, 'members.html', {'members': members})
