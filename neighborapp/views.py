@@ -13,23 +13,16 @@ def index(request):
 def profile(request, username):
     return render(request, 'profile.html')
 
-@login_required(login_url='/accounts/login/')
-def edit_profile(request):
-    current_user = request.user
-    profile = Profile.objects.get(user=request.user)
-
+def edit_profile(request, username):
+    user = User.objects.all()
     if request.method == 'POST':
-        form = EditProfileForm(request.POST, request.FILES, instance=profile)
+        form = ProfileForm(request.POST, request.FILES, instance=request.user.profile)
         if form.is_valid():
-            profile = form.save(commit=False)
-            profile.user = current_user
-            profile.email = current_user.email
-            profile.save()
-        return redirect('profile')
-
+            form.save()
+            return redirect('profile',user.username)
     else:
-        form = EditProfileForm(instance=profile)
-    return render(request, 'profiles/edit_profile.html', {"form": form})
+        form = ProfileForm(instance=request.user.profile)
+    return render(request, 'edit_profile.html', {'form': form})
 
 
 
