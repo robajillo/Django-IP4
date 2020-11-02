@@ -91,13 +91,13 @@ def join_hood(request, id):
     neighborhood = get_object_or_404(Neighborhood, id=id)
     request.user.profile.neighborhood = neighborhood
     request.user.profile.save()
-    return redirect('neighborhood')
+    return redirect('hood')
 
 def leave_hood(request, id):
     neighborhood = get_object_or_404(Neighborhood, id=id)
     request.user.profile.neighborhood = None
     request.user.profile.save()
-    return redirect('neighborhood')
+    return redirect('hood')
 
 def create_post(request, hood_id):
     hood = Neighborhood.objects.get(id=hood_id)
