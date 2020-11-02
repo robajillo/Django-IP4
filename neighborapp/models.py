@@ -7,11 +7,13 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 class Neighborhood(models.Model):
-    name = models.CharField(max_length=250, blank=True)
-    location = models.CharField(max_length=250, blank=True)
+    name = models.CharField(max_length=250)
+    location = models.CharField(max_length=250)
     occupants = models.IntegerField(default=0)
     admin = models.ForeignKey("Profile", on_delete=models.CASCADE, related_name='hood')
-    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    health = models.IntegerField( default=0)
+    police = models.IntegerField( default=0)
     
     def __str__(self):
         return f'{self.name} hood'
@@ -21,20 +23,17 @@ class Neighborhood(models.Model):
 
     def delete_neighborhood(self):
         self.delete()
+    
 
-    @classmethod
-    def find_neighborhood(cls, neighborhood_id):
-        return cls.objects.filter(id=neighborhood_id)
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
-    name = models.CharField(max_length=50, blank=True)
-    location = models.CharField(max_length=50, blank=True)
-    neighborhood = models.ForeignKey(Neighborhood, on_delete=models.SET_NULL, related_name='members', blank=True)
+    name = models.CharField(max_length=50)
+    location = models.CharField(max_length=50)
     profile_picture = models.ImageField(upload_to='images/')
 
     def __str__(self):
-        return self.user
+        return self.name
     
 
     @receiver(post_save, sender=User)
@@ -47,9 +46,9 @@ class Profile(models.Model):
         instance.profile.save()
 
 class Business(models.Model):
-    name = models.CharField(max_length=50, null=True, blank=True)
+    name = models.CharField(max_length=50)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='owner')
-    email = models.EmailField(max_length=100, blank=True)
+    email = models.EmailField(max_length=100)
     neighborhood = models.ForeignKey(Neighborhood, on_delete=models.CASCADE, related_name='owner')
 
     def __str__(self):
@@ -67,7 +66,7 @@ class Business(models.Model):
 
 
 class Post(models.Model):
-    title = models.CharField(max_length=120, null=True)
+    title = models.CharField(max_length=120)
     post = models.TextField()
     created_date = models.DateTimeField(default=timezone.now)
     user = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='post_owner')

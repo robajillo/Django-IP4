@@ -14,16 +14,15 @@ def profile(request, username):
     return render(request, 'profile.html')
 
 def edit_profile(request, username):
-    user = User.objects.all()
+    user = User.objects.get(username=username)
     if request.method == 'POST':
         form = ProfileForm(request.POST, request.FILES, instance=request.user.profile)
         if form.is_valid():
             form.save()
-            return redirect('profile',user.username)
+            return redirect('profile', user.username)
     else:
         form = ProfileForm(instance=request.user.profile)
     return render(request, 'edit_profile.html', {'form': form})
-
 
 
 def signup(request):

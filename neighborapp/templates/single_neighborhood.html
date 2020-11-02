@@ -17,10 +17,9 @@
                                 | <strong>{{ hood.business.count }}</strong> Businesses | <strong>
                                 {{ hood.hood_post.count }}</strong> Post{{ hood.hood_post.count|pluralize }}
                             </h6>
-                            <p class="card-text">{{hood.description}}</p>
                             <p class="card-text"><span class="text-info">Police Tell</span>
-                                &nbsp;<strong>{{hood.police_number}}</strong> |
-                                <span class="text-info">Hospital Tell</span> <strong>{{hood.health_tell}}</strong></p>
+                                &nbsp;<strong>{{hood.police}}</strong> |
+                                <span class="text-info">Hospital Tell</span> <strong>{{hood.health}}</strong></p>
                             <p class="card-text">Administrator: <small class="text-muted">
                                 {{ hood.admin.user.username }}</small></p>
                         </div>
@@ -47,16 +46,15 @@
                 <h5 class="D-block mx-auto tt">Businesses</h5>
                 <hr>
                 <div class="row">
-                    {% for bus in business %}
+                    {% for items in business %}
                     <div class="col-md-4">
                         <div class="card mb-4">
                             <div class="card-body">
-                                <h5 class="card-title">{{bus.name}}
+                                <h5 class="card-title">{{items.name}}
                                 </h5>
-                                <p class="card-text">{{bus.email}}</p>
-                                <p class="card-text">{{bus.description}}</p>
+                                <p class="card-text">{{items.email}}</p>
                                 <p class="card-text">Owner: <small class="text-muted">
-                                    {{ bus.user.user.username|title }}</small></p>
+                                    {{ items.user.user.username|title }}</small></p>
                             </div>
                         </div>
                     </div>
@@ -72,7 +70,7 @@
                                 <p class="card-text">" {{post.post}} "
                                 </p>
                                 <p class="card-text">By: <small class="text-white">
-                                    {{ post.user.user.username|title }}</small> <small style="float:right">{{post.date|date}}</small>
+                                    {{ post.user.user.username|title }}</small> <small style="float:right">{{post.created_date|date}}</small>
                                 </p>
                             </div>
                         </div>
