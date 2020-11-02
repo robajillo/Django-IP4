@@ -25,11 +25,11 @@
             </a>
         </li>
 
-        {% if user.profile.neighbourhood %}
+        {% if user.profile.neighborhood %}
         <li class="mb-4">
-            <a href="{% url 'single-hood' user.profile.neighbourhood.id %}">
+            <a href="{% url 'single-hood' user.profile.neighborhood.id %}">
                 <i class="fas fa-paper-plane"></i>&nbsp;
-                &nbsp;{{user.profile.neighbourhood.name}}
+                &nbsp;{{user.profile.neighborhood.name}}
             </a>
         </li>
         {% else %}
